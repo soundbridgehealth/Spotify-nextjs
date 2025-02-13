@@ -7,7 +7,7 @@ export default function Home() {
 
   const handleLogin = () => {
     const clientId = "aafe208f2e2e42c589d302798ed13c31";  // Replace with your actual Spotify Client ID
-    const redirectUri = "https://nextjs-boilerplate-ebon-five-38.vercel.app/callback";  // Update with your live URL or localhost during development
+    const redirectUri = "https://spotify-nextjs-bay.vercel.app/callback";  // Updated with your live URL
     const scopes = ["user-read-playback-state", "playlist-modify-public", "user-read-private"].join('%20');
     const authEndpoint = `https://accounts.spotify.com/authorize?response_type=code&client_id=${clientId}&scope=${scopes}&redirect_uri=${redirectUri}`;
 
@@ -25,9 +25,6 @@ export default function Home() {
   );
 }
 
-// Add this function in your Next.js API route (pages/api/callback.js) to handle the Spotify response
-// You'll need to exchange the authorization code for an access token
-
 export async function getServerSideProps(context) {
   const { code } = context.query;
 
@@ -36,17 +33,17 @@ export async function getServerSideProps(context) {
   }
 
   const response = await fetch('https://accounts.spotify.com/api/token', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-    Authorization: `Basic YWFmZTIwOGYyZTJlNDJjNTg5ZDMwMjc5OGVkMTNjMzE6ZGFmZTkzZDc4MmI3NGI1OTg2YjU4ZDM3ZmVmYzNhZTc=`,
-  },
-  body: new URLSearchParams({
-    grant_type: 'authorization_code',
-    code,
-    redirect_uri: 'https://nextjs-boilerplate-ebon-five-38.vercel.app/callback',
-  }),
-});
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Basic YWFmZTIwOGYyZTJlNDJjNTg5ZDMwMjc5OGVkMTNjMzE6ZGFmZTkzZDc4MmI3NGI1OTg2YjU4ZDM3ZmVmYzNhZTc=`,
+    },
+    body: new URLSearchParams({
+      grant_type: 'authorization_code',
+      code,
+      redirect_uri: 'https://spotify-nextjs-bay.vercel.app/callback',  // Updated with your live URL
+    }),
+  });
 
   const data = await response.json();
 
