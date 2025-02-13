@@ -10,17 +10,18 @@ export default async function handler(req, res) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: `Basic YWFmZTIwOGYyZTJlNDJjNTg5ZDMwMjc5OGVkMTNjMzE6ZGFmZTkzZDc4MmI3NGI1OTg2YjU4ZDM3ZmVmYzNhZTc=`,
+      Authorization: `Basic YWFmZTIwOGYyZTJlNDJjNTg5ZDMwMjc5OGVkMTNjMzE6ZGFmZTkzZDc4MmI3NGI1OTg2YjU4ZDM3ZmVmYzNhZTc=`,  // Replace with updated Base64-encoded Client ID and Secret
     },
     body: new URLSearchParams({
       grant_type: 'authorization_code',
       code,
-      redirect_uri: 'https://nextjs-boilerplate-ebon-five-38.vercel.app/callback',
+      redirect_uri: 'https://spotify-nextjs-bay.vercel.app/callback',  // Your live URL
     }),
   });
 
   const data = await response.json();
-  console.log('Access Token:', data.access_token);
 
-  res.status(200).json(data); // Respond with the access token
+  console.log('Access Token:', data.access_token);  // Temporary for debugging purposes
+
+  res.status(200).json(data);  // Respond with the access token
 }
