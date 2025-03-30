@@ -1,30 +1,32 @@
 export default async function handler(req, res) {
-  if (req.method !== 'GET') {
-    res.status(405).json({ error: 'Method Not Allowed' });
-    return;
-  }
-
   const { code } = req.query;
 
   if (!code) {
-    res.status(400).json({ error: "No authorization code provided" });
-    return;
+    return res.status(400).json({ error: 'No authorization code provided' });
   }
 
-  const response = await fetch('https://accounts.spotify.com/api/token', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: `Basic YWFmZTIwOGYyZTJlNDJjNTg5ZDMwMjc5OGVkMTNjMzE6ZGFmZTkzZDc4MmI3NGI1OTg2YjU4ZDM3ZmVmYzNhZTc=`,
-    },
-    body: new URLSearchParams({
-      grant_type: 'authorization_code',
-      code,
-      redirect_uri: 'https://spotify-nextjs-bay.vercel.app/api/callback',
-    }),
-  });
+  try {
+    const response = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Basic YOUR_BASE64_STRING_HERE`,
+      },
+      body: new URLSearchParams({
+        grant_type: 'authorization_code',
+        code,
+        redirect_uri: 'https://spotify-nextjs-bay.vercel.app/api/callback',
+      }),
+    });
 
-  const data = await response.json();
+    const data = await response.json();
 
-  res.status(200).json(data);
+    if (response.ok) {
+      return res.status(200).json(data);
+    } else {
+      return res.status(response.status).json({ error: 'Failed to exchange code', details: data });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: 'Something went wrong', message: error.message });
+  }
 }
