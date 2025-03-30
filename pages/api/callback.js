@@ -1,4 +1,9 @@
 export default async function handler(req, res) {
+  if (req.method !== 'GET') {
+    res.status(405).json({ error: 'Method Not Allowed' });
+    return;
+  }
+
   const { code } = req.query;
 
   if (!code) {
@@ -10,18 +15,16 @@ export default async function handler(req, res) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: `Basic YWFmZTIwOGYyZTJlNDJjNTg5ZDMwMjc5OGVkMTNjMzE6ZGFmZTkzZDc4MmI3NGI1OTg2YjU4ZDM3ZmVmYzNhZTc=`,  // Replace with updated Base64-encoded Client ID and Secret
+      Authorization: `Basic YWFmZTIwOGYyZTJlNDJjNTg5ZDMwMjc5OGVkMTNjMzE6ZGFmZTkzZDc4MmI3NGI1OTg2YjU4ZDM3ZmVmYzNhZTc=`,
     },
     body: new URLSearchParams({
       grant_type: 'authorization_code',
       code,
-      redirect_uri: 'https://spotify-nextjs-bay.vercel.app/callback',  // Your live URL
+      redirect_uri: 'https://spotify-nextjs-bay.vercel.app/api/callback',
     }),
   });
 
   const data = await response.json();
 
-  console.log('Access Token:', data.access_token);  // Temporary for debugging purposes
-
-  res.status(200).json(data);  // Respond with the access token
+  res.status(200).json(data);
 }
