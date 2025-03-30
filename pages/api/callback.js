@@ -10,7 +10,7 @@ export default async function handler(req, res) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Basic YOUR_BASE64_STRING_HERE`,
+        Authorization: `YWFmZTIwOGYyZTJlNDJjNTg5ZDMwMjc5OGVkMTNjMzE6ZGFmZTkzZDc4MmI3NGI1OTg2YjU4ZDM3ZmVmYzNhZTc=`,
       },
       body: new URLSearchParams({
         grant_type: 'authorization_code',
